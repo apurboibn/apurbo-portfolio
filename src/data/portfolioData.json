@@ -1,0 +1,410 @@
+{
+    "name": "Apurba Bhowal",
+    "role": "Junior Developer | WordPress & E-commerce Developer | AI-Assisted Digital Solutions",
+    "bio": "Computer Science and Engineering graduate from American International University-Bangladesh (AIUB), majoring in Information Systems, with professional experience in WordPress development, e-commerce, sales-focused landing pages, website deployment, domain and hosting management, IT operations, and client communication. Currently working as a Junior Developer at BizMappers Ltd. after completing a six-month IT internship with the company. Experienced in using modern AI tools in development, design, research, content, and problem-solving workflows. First-listed author and project lead of an undergraduate thesis on AI-based dynamic traffic signal control with emergency vehicle prioritization for urban intersections in Bangladesh.",
+    "contact": {
+        "email": "apurbo01hridoy@gmail.com",
+        "phone": "+8801925397719",
+        "location": "Dhaka, Bangladesh",
+        "linkedin": null,
+        "github": null
+    },
+    "skills": [
+        {
+            "category": "Web Development",
+            "items": [
+                "WordPress",
+                "Elementor",
+                "HTML",
+                "CSS",
+                "PHP",
+                "JavaScript",
+                "AJAX",
+                "JSON"
+            ]
+        },
+        {
+            "category": "E-commerce & Conversion",
+            "items": [
+                "WooCommerce",
+                "CartFlows",
+                "Sales-focused landing pages",
+                "E-commerce website development"
+            ]
+        },
+        {
+            "category": "Website Operations",
+            "items": [
+                "WordPress backend management",
+                "Domain management",
+                "Hosting management",
+                "Website deployment",
+                "Website maintenance",
+                "Website troubleshooting"
+            ]
+        },
+        {
+            "category": "Programming & Databases",
+            "items": [
+                "Python",
+                "R",
+                "Java",
+                "C#",
+                "C++",
+                "C",
+                "SQL",
+                "Oracle SQL",
+                ".NET Framework"
+            ]
+        },
+        {
+            "category": "AI, Machine Learning & Computer Vision",
+            "items": [
+                "Machine Learning",
+                "Deep Learning",
+                "Computer Vision",
+                "Object Detection",
+                "YOLOv5",
+                "Data Analysis",
+                "Data Visualization",
+                "Predictive Modeling",
+                "Dataset Preparation",
+                "Image Augmentation"
+            ]
+        },
+        {
+            "category": "AI & Modern Workflow Tools",
+            "items": [
+                "ChatGPT",
+                "Gemini",
+                "Claude",
+                "DeepSeek",
+                "Google Stitch",
+                "Antigravity IDE",
+                "Canva"
+            ]
+        },
+        {
+            "category": "IT Operations & Technical Support",
+            "items": [
+                "Laptop and desktop troubleshooting",
+                "Office network troubleshooting",
+                "Office network management",
+                "Windows installation",
+                "BIOS installation and configuration",
+                "PC performance and hang troubleshooting",
+                "Adobe Photoshop crash troubleshooting"
+            ]
+        },
+        {
+            "category": "Technical & Productivity Tools",
+            "items": [
+                "MATLAB",
+                "Multisim",
+                "Microsoft Office Suite"
+            ]
+        },
+        {
+            "category": "Professional Skills",
+            "items": [
+                "Client communication",
+                "Requirement gathering",
+                "Client meetings",
+                "Team collaboration",
+                "Technical problem-solving",
+                "Analytical thinking",
+                "Project leadership",
+                "Research and documentation",
+                "Bilingual professional communication in English and Bangla"
+            ]
+        }
+    ],
+    "experience": [
+        {
+            "company": "BizMappers Ltd.",
+            "role": "Junior Developer",
+            "employmentType": "Permanent",
+            "location": "Dhaka, Bangladesh",
+            "startDate": "2026-04-01",
+            "endDate": "Present",
+            "responsibilities": [
+                "Develop WordPress websites for clients.",
+                "Build and work on e-commerce websites.",
+                "Design and develop sales-focused landing pages for live client campaigns.",
+                "Use Elementor for page design and development.",
+                "Use WooCommerce for e-commerce functionality.",
+                "Use CartFlows for sales and checkout flows.",
+                "Work with the WordPress backend and website administration.",
+                "Manage domains and hosting.",
+                "Deploy websites from development to live production environments.",
+                "Communicate directly with clients and gather project requirements.",
+                "Conduct and participate in client meetings in both English and Bangla."
+            ]
+        },
+        {
+            "company": "BizMappers Ltd.",
+            "role": "IT Intern",
+            "focus": "IT Operations & Web Design",
+            "employmentType": "Internship",
+            "location": "Dhaka, Bangladesh",
+            "startDate": "2025-10-04",
+            "endDate": "2026-03-31",
+            "responsibilities": [
+                "Solved employee laptop and desktop problems.",
+                "Resolved network-related issues and helped manage the office network.",
+                "Performed Windows installation and system setup.",
+                "Worked with BIOS installation and configuration.",
+                "Troubleshot PC hanging and performance issues.",
+                "Fixed Adobe Photoshop crash problems.",
+                "Learned practical web design and development in an agency environment.",
+                "Contributed to real client web projects during the internship."
+            ]
+        }
+    ],
+    "education": [
+        {
+            "degree": "Bachelor of Science in Computer Science and Engineering (BSc CSE)",
+            "institution": "American International University-Bangladesh (AIUB)",
+            "location": "Dhaka, Bangladesh",
+            "major": "Information Systems",
+            "status": "Completed"
+        },
+        {
+            "degree": "Higher Secondary Certificate (HSC)",
+            "institution": "President Professor Dr. Iajuddin Ahmed Residential Model School and College",
+            "location": "Munshiganj, Bangladesh",
+            "group": "Science",
+            "years": "2018-2020",
+            "status": "Completed"
+        }
+    ],
+    "certifications": [
+        {
+            "issuer": "Cisco Networking Academy",
+            "title": "IT Essentials: PC Hardware and Software"
+        }
+    ],
+    "languages": [
+        {
+            "language": "Bangla",
+            "proficiency": "Fluent"
+        },
+        {
+            "language": "English",
+            "proficiency": "Professional working proficiency; comfortable conducting client meetings"
+        }
+    ],
+    "interests": [
+        "Artificial Intelligence",
+        "AI applications in healthcare",
+        "Data-driven problem solving",
+        "Intelligent systems",
+        "Web technology",
+        "Open-source contribution",
+        "Strength training and fitness"
+    ],
+    "projects": [
+        {
+            "title": "Ramy Cosmetics Website",
+            "type": "Live Client Website",
+            "category": "Live Client Work",
+            "description": "Live client e-commerce website designed and developed for beauty & cosmetics products.",
+            "techStack": [
+                "WordPress",
+                "WooCommerce",
+                "Elementor",
+                "PHP"
+            ],
+            "links": [
+                {
+                    "label": "Visit Live Website",
+                    "url": "https://ramybd.com/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "Wajiha Website",
+            "type": "Live Client Website",
+            "category": "Live Client Work",
+            "description": "Professional live client website built with custom layouts and mobile responsiveness.",
+            "techStack": [
+                "WordPress",
+                "Elementor",
+                "CSS",
+                "Website Operations"
+            ],
+            "links": [
+                {
+                    "label": "Visit Live Website",
+                    "url": "https://wajiha.com.bd/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "The Premium Books Website",
+            "type": "Live Client Website",
+            "category": "Live Client Work",
+            "description": "Full-fledged live client online bookstore with dynamic catalog and payment checkout.",
+            "techStack": [
+                "WordPress",
+                "WooCommerce",
+                "CartFlows",
+                "Domain & Hosting"
+            ],
+            "links": [
+                {
+                    "label": "Visit Live Website",
+                    "url": "https://thepremiumbooks.com/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "Fresh Eats Website",
+            "type": "Live Client Website",
+            "category": "Live Client Work",
+            "description": "Live client food & grocery e-commerce store with optimized checkout experience.",
+            "techStack": [
+                "WordPress",
+                "WooCommerce",
+                "Elementor"
+            ],
+            "links": [
+                {
+                    "label": "Visit Live Website",
+                    "url": "https://fresheats.com.bd/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "The Premium Books Sales Landing Page",
+            "type": "Live Sales Landing Page",
+            "category": "Live Client Work",
+            "description": "High-converting sales-focused landing page for specific book marketing campaigns.",
+            "techStack": [
+                "CartFlows",
+                "Elementor",
+                "WordPress Backend"
+            ],
+            "links": [
+                {
+                    "label": "Visit Landing Page",
+                    "url": "https://landing.thepremiumbooks.com/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "Fresh Eats Sales Landing Page",
+            "type": "Live Sales Landing Page",
+            "category": "Live Client Work",
+            "description": "High-converting sales funnel landing page built for direct product sales campaigns.",
+            "techStack": [
+                "CartFlows",
+                "Elementor",
+                "Conversion Optimization"
+            ],
+            "links": [
+                {
+                    "label": "Visit Landing Page",
+                    "url": "https://landing.fresheats.com.bd/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "Aliza Hub Landing Page",
+            "type": "Live Client Landing Page",
+            "category": "Live Client Work",
+            "description": "Live responsive landing page crafted for product showcase and brand presence.",
+            "techStack": [
+                "WordPress",
+                "Elementor",
+                "HTML/CSS"
+            ],
+            "links": [
+                {
+                    "label": "Visit Landing Page",
+                    "url": "https://alizahub.com/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "AI-Based Dynamic Traffic Signal Control System With Emergency Vehicle Prioritization for Urban Intersections in Bangladesh",
+            "type": "AI & Computer Vision Research",
+            "category": "Research",
+            "role": "First-listed Author & Project Lead",
+            "description": "Developed an AI-based traffic management system for Bangladeshi urban intersections that combines real-time multi-class vehicle detection, lane-wise traffic analysis, adaptive signal timing, and emergency vehicle prioritization. The system used a YOLOv5 model trained on a 22-class Bangladesh-specific vehicle dataset.",
+            "techStack": [
+                "Python",
+                "YOLOv5",
+                "Computer Vision",
+                "Deep Learning",
+                "Object Detection",
+                "Image Augmentation",
+                "Adaptive Signal Timing"
+            ],
+            "links": [
+                {
+                    "label": "Read Full Thesis Paper (PDF)",
+                    "url": "/docs/traffic-signal-thesis.pdf",
+                    "isPdf": true
+                }
+            ]
+        },
+        {
+            "title": "Heart Disease Prediction by Hyperparameter Tuning",
+            "type": "Academic Research & ML Project",
+            "category": "Academic / ML",
+            "description": "Developed and researched a heart disease prediction approach using machine learning and hyperparameter tuning.",
+            "techStack": [
+                "Python",
+                "Machine Learning",
+                "Hyperparameter Tuning",
+                "Predictive Modeling"
+            ],
+            "links": []
+        },
+        {
+            "title": "Apple Leaf Disease Classification Using Ensemble Deep Learning Models",
+            "type": "Computer Vision Project",
+            "category": "Academic / ML",
+            "description": "Computer vision project classifying apple leaf diseases using ensemble deep learning models.",
+            "techStack": [
+                "Computer Vision",
+                "Deep Learning",
+                "Ensemble Learning",
+                "Python"
+            ],
+            "links": []
+        },
+        {
+            "title": "Web Scraping and Content Aggregation of News Articles",
+            "type": "Academic Data Science Project",
+            "category": "Academic / ML",
+            "description": "Built a web scraping pipeline for aggregating news article content automatically.",
+            "techStack": [
+                "R",
+                "Web Scraping",
+                "Data Analytics"
+            ],
+            "links": []
+        },
+        {
+            "title": "IoT-Based Air Quality and Weather Monitoring System",
+            "type": "Embedded Systems Project",
+            "category": "Academic / ML",
+            "description": "IoT-based environmental monitoring system for real-time air quality and weather tracking.",
+            "techStack": [
+                "IoT",
+                "Microprocessors",
+                "Embedded Systems"
+            ],
+            "links": []
+        }
+    ]
+}
