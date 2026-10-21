@@ -14,14 +14,14 @@ export default function ExperienceTimeline({ portfolio }) {
   const experiences = portfolio?.experience || [];
 
   return (
-    <section id="experience" className="py-20 relative">
+    <section id="experience" className="py-16 sm:py-20 relative overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-emerald-500/5 blur-[140px] rounded-full pointer-events-none -z-10" />
+      <div className="hidden md:block absolute top-1/2 left-1/4 w-96 h-96 bg-emerald-500/5 blur-[140px] rounded-full pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             Career History
@@ -36,32 +36,32 @@ export default function ExperienceTimeline({ portfolio }) {
 
         {/* Timeline Container */}
         <div className="relative max-w-4xl mx-auto">
-          {/* Vertical Spine */}
-          <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 via-indigo-500 to-slate-300 dark:to-slate-800" />
+          {/* Vertical Spine (left edge on phones/tablets, centred from md up) */}
+          <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-emerald-500 via-indigo-500 to-slate-300 dark:to-slate-800" />
 
-          <div className="space-y-12">
+          <div className="space-y-8 md:space-y-12">
             {experiences.map((exp, idx) => {
               const isEven = idx % 2 === 0;
 
               return (
                 <div 
                   key={idx} 
-                  className={`relative flex flex-col sm:flex-row items-start ${
-                    isEven ? 'sm:flex-row-reverse' : ''
+                  className={`relative flex flex-col md:flex-row items-start ${
+                    isEven ? 'md:flex-row-reverse' : ''
                   }`}
                 >
                   
                   {/* Timeline Center Node */}
-                  <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-slate-950 border-2 border-emerald-500 dark:border-emerald-400 z-10 shadow-lg shadow-emerald-500/30">
+                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-slate-950 border-2 border-emerald-500 dark:border-emerald-400 z-10 shadow-lg shadow-emerald-500/30">
                     <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
                   </div>
 
                   {/* Content Card (Half Width) */}
-                  <div className={`pl-12 sm:pl-0 sm:w-1/2 ${
-                    isEven ? 'sm:pl-10' : 'sm:pr-10'
-                  } w-full`}>
+                  <div className={`w-full pl-12 md:w-1/2 ${
+                    isEven ? 'md:pl-10' : 'md:pl-0 md:pr-10'
+                  }`}>
                     
-                    <div className="glass-panel p-6 sm:p-7 rounded-2xl border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/40 transition-all duration-300 shadow-xl group">
+                    <div className="glass-panel p-5 sm:p-7 rounded-2xl border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/40 transition-all duration-300 shadow-xl group">
                       
                       {/* Role Header */}
                       <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
@@ -75,7 +75,7 @@ export default function ExperienceTimeline({ portfolio }) {
                         </div>
                       </div>
 
-                      <h3 className="text-xl font-bold text-slate-900 dark:text-white font-['Outfit'] group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
+                      <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white font-['Outfit'] group-hover:text-emerald-600 dark:group-hover:text-emerald-300 transition-colors">
                         {exp.role}
                       </h3>
 

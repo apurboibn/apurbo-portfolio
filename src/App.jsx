@@ -20,29 +20,29 @@ function AppContent() {
   const thesisProject = portfolioData.projects?.find((p) => p.category === 'Research') || portfolioData.projects?.[0];
 
   useEffect(() => {
-    const handleScrollSpy = () => {
-      const sections = ['hero', 'about', 'skills', 'experience', 'projects', 'it-infrastructure', 'contact'];
-      const scrollPosition = window.scrollY + 200;
+    // Highlight the nav link of the section in the middle of the screen.
+    // IntersectionObserver is much cheaper than measuring every section on each scroll event.
+    const sections = ['hero', 'about', 'skills', 'experience', 'projects', 'it-infrastructure', 'contact']
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
 
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            break;
-          }
-        }
-      }
-    };
+    if (!('IntersectionObserver' in window)) return undefined;
 
-    window.addEventListener('scroll', handleScrollSpy);
-    return () => window.removeEventListener('scroll', handleScrollSpy);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] dark:bg-[#080B11] text-slate-900 dark:text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-300 relative transition-colors duration-300">
+    <div className="min-h-screen overflow-x-clip bg-[#F8FAFC] dark:bg-[#080B11] text-slate-900 dark:text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-900 dark:selection:text-emerald-200 relative transition-colors duration-300">
       {/* Dynamic Background Noise / Pattern */}
       <div className="fixed inset-0 bg-grid-pattern opacity-30 pointer-events-none -z-20" />
       <div className="fixed inset-0 bg-radial-gradient pointer-events-none -z-10" />

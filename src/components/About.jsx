@@ -52,10 +52,10 @@ export default function About({ portfolio }) {
   };
 
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/3 left-0 w-[500px] h-[500px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none -z-10" />
-      <div className="absolute bottom-10 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[160px] rounded-full pointer-events-none -z-10" />
+    <section id="about" className="py-16 sm:py-24 relative overflow-hidden">
+      {/* Ambient background glow (desktop only — heavy blur) */}
+      <div className="hidden md:block absolute top-1/3 left-0 w-[500px] h-[500px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none -z-10" />
+      <div className="hidden md:block absolute bottom-10 right-0 w-[500px] h-[500px] bg-indigo-500/5 blur-[160px] rounded-full pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
@@ -118,14 +118,21 @@ export default function About({ portfolio }) {
                 
                 {/* Profile Image with subtle zoom on hover */}
                 <div className="relative aspect-[4/4.4] w-full overflow-hidden bg-slate-100 dark:bg-slate-950">
-                  <img
-                    src="/profile.jpg"
-                    alt="Apurba Bhowal"
-                    className="w-full h-full object-cover object-top filter contrast-[1.02] brightness-95 group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                    }}
-                  />
+                  <picture>
+                    <source srcSet="/profile.webp" type="image/webp" />
+                    <img
+                      src="/profile.jpg"
+                      alt="Apurba Bhowal"
+                      width="800"
+                      height="800"
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-top filter contrast-[1.02] brightness-95 group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </picture>
                   {/* Subtle Gradient Vignette */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 dark:from-[#080B11] via-transparent to-transparent opacity-60" />
                 </div>
@@ -157,7 +164,7 @@ export default function About({ portfolio }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch pt-4 border-t border-slate-200 dark:border-slate-800/80">
           
           {/* LEFT CONTAINER: Academic Information */}
-          <div className="glass-panel p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6">
+          <div className="glass-panel p-5 sm:p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6">
             
             <div className="space-y-5">
               {/* Header */}
@@ -166,7 +173,7 @@ export default function About({ portfolio }) {
                   <GraduationCap className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                   Academic Information
                 </h3>
-                <span className="text-[11px] font-mono text-indigo-600 dark:text-indigo-400">Education & Credentials</span>
+                <span className="hidden sm:inline text-[11px] font-mono text-indigo-600 dark:text-indigo-400">Education & Credentials</span>
               </div>
 
               {/* Education Cards */}
@@ -186,7 +193,7 @@ export default function About({ portfolio }) {
                     <Building2 className="w-3.5 h-3.5 text-slate-400" />
                     American International University-Bangladesh (AIUB)
                   </p>
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono pt-1">
+                  <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400 font-mono pt-1">
                     <span>Major: Information Systems</span>
                     <span>Dhaka, Bangladesh</span>
                   </div>
@@ -206,7 +213,7 @@ export default function About({ portfolio }) {
                     <Building2 className="w-3.5 h-3.5 text-slate-400" />
                     President Professor Dr. Iajuddin Ahmed Residential Model School & College
                   </p>
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 font-mono pt-1">
+                  <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-[11px] text-slate-500 dark:text-slate-400 font-mono pt-1">
                     <span>Group: Science (2018-2020)</span>
                     <span>Munshiganj, Bangladesh</span>
                   </div>
@@ -230,7 +237,7 @@ export default function About({ portfolio }) {
           </div>
 
           {/* RIGHT CONTAINER: What I Do */}
-          <div className="glass-panel p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6">
+          <div className="glass-panel p-5 sm:p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6">
             
             <div className="space-y-5">
               {/* Header */}
@@ -239,7 +246,7 @@ export default function About({ portfolio }) {
                   <Terminal className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   What I Do
                 </h3>
-                <span className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400">Core Capabilities</span>
+                <span className="hidden sm:inline text-[11px] font-mono text-emerald-600 dark:text-emerald-400">Core Capabilities</span>
               </div>
 
               {/* Service Cards */}

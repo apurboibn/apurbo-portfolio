@@ -2,103 +2,136 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Theming note: light styles are the default and dark styles hang off `.dark` on <html>
+  (set before first paint by the script in index.html). The dark selectors are wrapped
+  in :where() so they keep the same specificity as the light ones — that way Tailwind
+  utilities such as `bg-slate-950/80` or `border-emerald-500/30` placed next to
+  `glass-panel` still win in BOTH themes.
+*/
+
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: 'Outfit', 'Inter', sans-serif;
+    font-family: 'Outfit', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
-  
+
   body {
-    background-color: #080B11;
-    color: #F1F5F9;
+    background-color: #F8FAFC;
+    color: #0F172A;
+    overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  html.light body {
-    background-color: #F8FAFC;
-    color: #0F172A;
+  :where(.dark) body {
+    background-color: #080B11;
+    color: #F1F5F9;
+  }
+
+  /* Keep section headings clear of the fixed navbar when jumping to an anchor */
+  section[id] {
+    scroll-margin-top: 4.5rem;
   }
 
   /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
+    height: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #080B11;
-  }
-  html.light ::-webkit-scrollbar-track {
     background: #F1F5F9;
   }
   ::-webkit-scrollbar-thumb {
-    background: #1E293B;
-    border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-  }
-  html.light ::-webkit-scrollbar-thumb {
     background: #CBD5E1;
+    border-radius: 4px;
     border: 1px solid rgba(0, 0, 0, 0.05);
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #334155;
-  }
-  html.light ::-webkit-scrollbar-thumb:hover {
     background: #94A3B8;
+  }
+  :where(.dark) ::-webkit-scrollbar-track {
+    background: #080B11;
+  }
+  :where(.dark) ::-webkit-scrollbar-thumb {
+    background: #1E293B;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  :where(.dark) ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
   }
 }
 
-@layer utilities {
+@layer components {
   .glass-panel {
-    background: rgba(13, 19, 32, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  html.light .glass-panel {
-    background: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(226, 232, 240, 0.95);
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
   }
 
-  .glass-card {
-    background: linear-gradient(135deg, rgba(17, 24, 39, 0.7) 0%, rgba(15, 23, 42, 0.4) 100%);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.07);
+  :where(.dark) .glass-panel {
+    background-color: rgba(13, 19, 32, 0.7);
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: none;
   }
 
-  html.light .glass-card {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.8) 100%);
+  .glass-card {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.8) 100%);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(226, 232, 240, 0.9);
     box-shadow: 0 4px 15px -2px rgba(0, 0, 0, 0.05);
   }
 
+  :where(.dark) .glass-card {
+    background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.7) 0%, rgba(15, 23, 42, 0.4) 100%);
+    border-color: rgba(255, 255, 255, 0.07);
+    box-shadow: none;
+  }
+
+  /*
+    Phones: backdrop blur on dozens of cards makes scrolling janky on mid-range Android.
+    Drop the blur and make the panels a little more opaque instead — looks the same.
+  */
+  @media (max-width: 767px) {
+    .glass-panel,
+    .glass-card {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+    .glass-panel {
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+    :where(.dark) .glass-panel {
+      background-color: rgba(13, 19, 32, 0.92);
+    }
+  }
+}
+
+@layer utilities {
   .text-gradient-emerald {
-    background: linear-gradient(135deg, #34D399 0%, #10B981 50%, #06B6D4 100%);
+    background-image: linear-gradient(135deg, #059669 0%, #10B981 50%, #0891B2 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  html.light .text-gradient-emerald {
-    background: linear-gradient(135deg, #059669 0%, #10B981 50%, #0891B2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  :where(.dark) .text-gradient-emerald {
+    background-image: linear-gradient(135deg, #34D399 0%, #10B981 50%, #06B6D4 100%);
   }
 
   .text-gradient-indigo {
-    background: linear-gradient(135deg, #818CF8 0%, #6366F1 50%, #A855F7 100%);
+    background-image: linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #9333EA 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  html.light .text-gradient-indigo {
-    background: linear-gradient(135deg, #4F46E5 0%, #6366F1 50%, #9333EA 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+  :where(.dark) .text-gradient-indigo {
+    background-image: linear-gradient(135deg, #818CF8 0%, #6366F1 50%, #A855F7 100%);
   }
 
   .glow-emerald {
@@ -111,22 +144,43 @@
 
   .bg-grid-pattern {
     background-size: 40px 40px;
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  }
-
-  html.light .bg-grid-pattern {
-    background-image: 
+    background-image:
       linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
   }
 
+  :where(.dark) .bg-grid-pattern {
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
   .bg-radial-gradient {
+    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, rgba(99, 102, 241, 0.03) 45%, transparent 70%);
+  }
+
+  :where(.dark) .bg-radial-gradient {
     background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.12) 0%, rgba(99, 102, 241, 0.05) 45%, transparent 70%);
   }
 
-  html.light .bg-radial-gradient {
-    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, rgba(99, 102, 241, 0.03) 45%, transparent 70%);
+  /* Horizontally scrollable chip rows on phones */
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

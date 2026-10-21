@@ -1,19 +1,51 @@
 <!doctype html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#080B11" />
+
+    <!-- Apply the saved / system theme before first paint so there is no dark↔light flash -->
+    <script>
+      (function () {
+        var theme = 'dark';
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            theme = stored;
+          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            theme = 'light';
+          }
+        } catch (e) {}
+        var root = document.documentElement;
+        root.classList.add(theme);
+        root.style.colorScheme = theme;
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#080B11' : '#F8FAFC');
+      })();
+    </script>
+
     <title>Apurba Bhowal | Junior Developer & AI-Assisted Digital Solutions</title>
     <meta name="description" content="Portfolio of Apurba Bhowal — Junior Developer, WordPress & E-commerce specialist, and AI researcher based in Dhaka, Bangladesh." />
     <meta name="keywords" content="Apurba Bhowal, Junior Developer, WordPress Developer, E-commerce, AI Solutions, AIUB, Computer Science, Dhaka Bangladesh" />
-    
-    <!-- Google Fonts -->
+    <meta name="author" content="Apurba Bhowal" />
+
+    <!-- Social sharing previews -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Apurba Bhowal | Junior Developer & AI-Assisted Digital Solutions" />
+    <meta property="og:description" content="WordPress & WooCommerce developer, conversion-focused landing pages, IT operations and published AI research." />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Google Fonts (variable fonts, loaded without blocking first paint) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400..700&family=Outfit:wght@400..800&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400..700&family=Outfit:wght@400..800&display=swap" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400..700&family=Outfit:wght@400..800&display=swap"></noscript>
   </head>
-  <body class="bg-[#080B11] text-slate-100 selection:bg-emerald-500/30 selection:text-emerald-300 antialiased overflow-x-hidden">
+  <body class="antialiased">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

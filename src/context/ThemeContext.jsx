@@ -2,36 +2,65 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 const ThemeContext = createContext();
 
+const THEME_COLORS = { dark: '#080B11', light: '#F8FAFC' };
+
+function readStoredTheme() {
+  try {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark' || stored === 'light') return stored;
+  } catch {
+    // localStorage can be blocked (private mode, strict cookie settings)
+  }
+  return null;
+}
+
+function getSystemTheme() {
+  if (typeof window !== 'undefined' && window.matchMedia?.('(prefers-color-scheme: light)').matches) {
+    return 'light';
+  }
+  return 'dark';
+}
+
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || stored === 'light') {
-        return stored;
-      }
-      // Check system preference
-      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        return 'light';
-      }
+    // index.html already applied the right class before first paint — read it back so React agrees
+    if (typeof document !== 'undefined') {
+      const root = document.documentElement;
+      if (root.classList.contains('light')) return 'light';
+      if (root.classList.contains('dark')) return 'dark';
     }
-    return 'dark'; // Default theme
+    return readStoredTheme() || getSystemTheme();
   });
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-      root.classList.remove('light');
-    } else {
-      root.classList.remove('dark');
-      root.classList.add('light');
-    }
-    localStorage.setItem('theme', theme);
+    root.classList.toggle('dark', theme === 'dark');
+    root.classList.toggle('light', theme === 'light');
+    root.style.colorScheme = theme;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_COLORS[theme]);
   }, [theme]);
 
+  // Follow the phone/OS theme live — until the visitor picks one with the toggle
+  useEffect(() => {
+    const media = window.matchMedia?.('(prefers-color-scheme: light)');
+    if (!media) return undefined;
+    const handleChange = (e) => {
+      if (!readStoredTheme()) setTheme(e.matches ? 'light' : 'dark');
+    };
+    media.addEventListener?.('change', handleChange);
+    return () => media.removeEventListener?.('change', handleChange);
+  }, []);
+
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem('theme', next);
+      } catch {
+        // ignore — theme still switches for this visit
+      }
+      return next;
+    });
   };
 
   return (

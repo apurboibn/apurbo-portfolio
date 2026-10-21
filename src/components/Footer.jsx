@@ -7,16 +7,16 @@ export default function Footer({ portfolio }) {
   };
 
   return (
-    <footer className="border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#06080D] pt-16 pb-12 relative overflow-hidden transition-colors duration-300">
+    <footer className="border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#06080D] pt-12 sm:pt-16 pb-10 sm:pb-12 relative overflow-hidden transition-colors duration-300">
       {/* Background Lighting */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-24 bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-12 border-b border-slate-200 dark:border-slate-800/60">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 pb-10 sm:pb-12 border-b border-slate-200 dark:border-slate-800/60">
           
           {/* Brand & Bio (Left 6 Cols) */}
-          <div className="md:col-span-6 space-y-4">
+          <div className="sm:col-span-2 md:col-span-6 space-y-4">
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-indigo-500/20 border border-emerald-500/30">
                 <Terminal className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
@@ -35,7 +35,7 @@ export default function Footer({ portfolio }) {
             <h4 className="text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 font-bold">
               Navigation
             </h4>
-            <ul className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
+            <ul className="space-y-1 text-xs text-slate-500 dark:text-slate-400 [&_a]:inline-block [&_a]:py-1">
               <li><a href="#about" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">About & Education</a></li>
               <li><a href="#skills" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Skills Matrix</a></li>
               <li><a href="#experience" className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Experience Timeline</a></li>
@@ -51,14 +51,14 @@ export default function Footer({ portfolio }) {
               Direct Reach
             </h4>
             <div className="space-y-2 text-xs text-slate-500 dark:text-slate-400">
-              <p className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
-                <span>apurbo01hridoy@gmail.com</span>
-              </p>
-              <p className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-cyan-500 dark:text-cyan-400" />
+              <a href="mailto:apurbo01hridoy@gmail.com" className="flex items-center gap-2 py-1 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                <Mail className="w-3.5 h-3.5 shrink-0 text-emerald-500 dark:text-emerald-400" />
+                <span className="break-all">apurbo01hridoy@gmail.com</span>
+              </a>
+              <a href="tel:+8801925397719" className="flex items-center gap-2 py-1 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
+                <Phone className="w-3.5 h-3.5 shrink-0 text-cyan-500 dark:text-cyan-400" />
                 <span>+880 1925 397719</span>
-              </p>
+              </a>
               <p className="flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400" />
                 <span>Dhaka, Bangladesh</span>
@@ -69,10 +69,10 @@ export default function Footer({ portfolio }) {
         </div>
 
         {/* Bottom Copyright & Back to Top */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500 text-center sm:text-left">
           <p>© {new Date().getFullYear()} Apurba Bhowal. All rights reserved.</p>
           
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
             <span className="text-[11px] font-mono text-slate-400">
               Engineered with React • Tailwind • Framer Motion
             </span>

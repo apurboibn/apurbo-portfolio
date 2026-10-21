@@ -11,7 +11,13 @@ import {
   ArrowUpRight,
   ExternalLink
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
+
+// Confetti is only needed after a click, so load it on demand instead of in the main bundle
+const fireConfetti = (options) => {
+  import('canvas-confetti')
+    .then(({ default: confetti }) => confetti({ disableForReducedMotion: true, ...options }))
+    .catch(() => {});
+};
 
 export default function ContactSection({ portfolio }) {
   const contact = portfolio?.contact || {};
@@ -21,13 +27,16 @@ export default function ContactSection({ portfolio }) {
 
   const [copiedField, setCopiedField] = useState(null);
   const [formState, setFormState] = useState({ name: '', email: '', subject: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleCopy = (text, field) => {
-    navigator.clipboard.writeText(text);
+  const handleCopy = async (text, field) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      return; // clipboard blocked (old browser / insecure context) — the link itself still works
+    }
     setCopiedField(field);
-    confetti({
+    fireConfetti({
       particleCount: 30,
       spread: 50,
       origin: { y: 0.85 },
@@ -36,36 +45,38 @@ export default function ContactSection({ portfolio }) {
     setTimeout(() => setCopiedField(null), 2500);
   };
 
+  // There is no backend, so the form hands the message to the visitor's email app
+  // (it used to only pretend to send, and messages were silently lost).
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formState.name || !formState.email || !formState.message) return;
 
-    setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      confetti({
-        particleCount: 60,
-        spread: 80,
-        origin: { y: 0.6 },
-        colors: ['#10B981', '#34D399', '#06B6D4', '#6366F1']
-      });
-      setFormState({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setIsSubmitted(false), 5000);
-    }, 1000);
+    const subject = formState.subject.trim() || `Portfolio enquiry from ${formState.name}`;
+    const body = `${formState.message}\n\n— ${formState.name}\n${formState.email}`;
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    setIsSubmitted(true);
+    fireConfetti({
+      particleCount: 60,
+      spread: 80,
+      origin: { y: 0.6 },
+      colors: ['#10B981', '#34D399', '#06B6D4', '#6366F1']
+    });
+    setFormState({ name: '', email: '', subject: '', message: '' });
+    setTimeout(() => setIsSubmitted(false), 8000);
   };
 
   const cleanPhone = phone.replace(/[^0-9+]/g, '');
 
   return (
-    <section id="contact" className="py-20 relative">
-      {/* Background Glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none -z-10" />
+    <section id="contact" className="py-16 sm:py-20 relative overflow-hidden">
+      {/* Background Glow (desktop only) */}
+      <div className="hidden md:block absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-emerald-500/5 blur-[160px] rounded-full pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             Let's Collaborate
@@ -78,28 +89,29 @@ export default function ContactSection({ portfolio }) {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
           {/* Left Column: Contact Cards */}
-          <div className="lg:col-span-5 space-y-5">
+          <div className="lg:col-span-5 space-y-4 sm:space-y-5">
             
             {/* Direct Email Card */}
-            <div className="glass-panel p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-emerald-500/40 transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
+            <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-emerald-500/40 transition-colors">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="shrink-0 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
                     <Mail className="w-5 h-5" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">Direct Email</h3>
-                    <a href={`mailto:${email}`} className="text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
+                    <a href={`mailto:${email}`} className="block break-all text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">
                       {email}
                     </a>
                   </div>
                 </div>
                 <button
                   onClick={() => handleCopy(email, 'email')}
-                  className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
+                  aria-label="Copy email"
+                  className="shrink-0 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
                   title="Copy email"
                 >
                   {copiedField === 'email' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
@@ -108,23 +120,24 @@ export default function ContactSection({ portfolio }) {
             </div>
 
             {/* Direct Phone & WhatsApp Card */}
-            <div className="glass-panel p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-cyan-500/40 transition-colors">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
+            <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-cyan-500/40 transition-colors">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="shrink-0 p-2.5 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
                     <Phone className="w-5 h-5" />
                   </div>
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 font-semibold">Phone & WhatsApp</h3>
                     <a href={`tel:${cleanPhone}`} className="text-sm sm:text-base font-bold text-slate-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors">
                       {phone}
                     </a>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   <button
                     onClick={() => handleCopy(phone, 'phone')}
-                    className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-500 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
+                    aria-label="Copy phone number"
+                    className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-cyan-500 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
                     title="Copy phone"
                   >
                     {copiedField === 'phone' ? <Check className="w-4 h-4 text-cyan-500" /> : <Copy className="w-4 h-4" />}
@@ -145,9 +158,9 @@ export default function ContactSection({ portfolio }) {
             </div>
 
             {/* Location Card */}
-            <div className="glass-panel p-6 rounded-2xl border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 transition-colors">
+            <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 transition-colors">
               <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400">
+                <div className="shrink-0 p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400">
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
@@ -172,7 +185,7 @@ export default function ContactSection({ portfolio }) {
 
           {/* Right Column: Interactive Message Form */}
           <div className="lg:col-span-7">
-            <div className="glass-panel p-8 rounded-3xl border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+            <div className="glass-panel p-5 sm:p-8 rounded-3xl border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
               
               <h3 className="text-xl font-bold text-slate-900 dark:text-white font-['Outfit'] mb-6 flex items-center gap-2">
                 <Send className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -184,76 +197,79 @@ export default function ContactSection({ portfolio }) {
                   <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
                     <Check className="w-6 h-6" />
                   </div>
-                  <h4 className="text-lg font-bold text-slate-900 dark:text-white">Message Sent Successfully!</h4>
+                  <h4 className="text-lg font-bold text-slate-900 dark:text-white">Your email app is opening…</h4>
                   <p className="text-xs text-slate-600 dark:text-slate-300">
-                    Thank you for reaching out. Apurba will review your message and reply promptly.
+                    Your message is ready in a new email — just press Send there. If nothing opened, write to{' '}
+                    <a href={`mailto:${email}`} className="font-semibold text-emerald-600 dark:text-emerald-400 underline break-all">{email}</a>.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <label className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Name *</label>
+                      <label htmlFor="contact-name" className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Name *</label>
                       <input
                         type="text"
                         required
+                        id="contact-name"
                         value={formState.name}
+                        autoComplete="name"
                         onChange={(e) => setFormState({ ...formState, name: e.target.value })}
                         placeholder="John Doe"
-                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
                       />
                     </div>
 
                     <div className="space-y-1.5">
-                      <label className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Email *</label>
+                      <label htmlFor="contact-email" className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Email *</label>
                       <input
                         type="email"
                         required
+                        id="contact-email"
                         value={formState.email}
+                        autoComplete="email"
                         onChange={(e) => setFormState({ ...formState, email: e.target.value })}
                         placeholder="john@example.com"
-                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
+                        className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-mono text-slate-500 dark:text-slate-400">Subject / Project Type</label>
+                    <label htmlFor="contact-subject" className="text-xs font-mono text-slate-500 dark:text-slate-400">Subject / Project Type</label>
                     <input
                       type="text"
+                      id="contact-subject"
                       value={formState.subject}
                       onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
                       placeholder="WordPress Site, Sales Funnel, AI Research, etc."
-                      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all"
                     />
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Message *</label>
+                    <label htmlFor="contact-message" className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Message *</label>
                     <textarea
                       rows={5}
                       required
+                      id="contact-message"
                       value={formState.message}
                       onChange={(e) => setFormState({ ...formState, message: e.target.value })}
                       placeholder="Hi Apurba, I'd like to discuss a project..."
-                      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all resize-none"
+                      className="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-base sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none transition-all resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50"
+                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
                   >
-                    {isSubmitting ? (
-                      <span>Sending Message...</span>
-                    ) : (
-                      <>
-                        <Send className="w-4 h-4" />
-                        <span>Send Message</span>
-                      </>
-                    )}
+                    <Send className="w-4 h-4" />
+                    <span>Send Message</span>
                   </button>
+                  <p className="text-[11px] text-center text-slate-500 dark:text-slate-400">
+                    Opens your email app with this message ready to send.
+                  </p>
                 </form>
               )}
 

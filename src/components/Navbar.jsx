@@ -20,9 +20,28 @@ export default function Navbar({ activeSection }) {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close the mobile menu with Escape, or when the screen grows to the desktop layout
+  useEffect(() => {
+    if (!mobileMenuOpen) return undefined;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false);
+    };
+    const desktop = window.matchMedia('(min-width: 1024px)');
+    const handleResize = (e) => {
+      if (e.matches) setMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    desktop.addEventListener?.('change', handleResize);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      desktop.removeEventListener?.('change', handleResize);
+    };
+  }, [mobileMenuOpen]);
 
   const handleLinkClick = (e, href) => {
     e.preventDefault();
@@ -36,7 +55,7 @@ export default function Navbar({ activeSection }) {
   return (
     <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
+        isScrolled || mobileMenuOpen
           ? 'py-3 bg-white/85 dark:bg-[#080B11]/85 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800/80 shadow-lg shadow-black/5 dark:shadow-2xl dark:shadow-black/40' 
           : 'py-5 bg-transparent'
       }`}
@@ -46,7 +65,7 @@ export default function Navbar({ activeSection }) {
         <a 
           href="#hero" 
           onClick={(e) => handleLinkClick(e, '#hero')}
-          className="group flex items-center gap-2.5 text-slate-900 dark:text-slate-100 transition-transform active:scale-95"
+          className="group flex items-center gap-2.5 shrink-0 text-slate-900 dark:text-slate-100 transition-transform active:scale-95"
         >
           <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-indigo-500/20 border border-emerald-500/30 group-hover:border-emerald-400/60 transition-colors">
             <Terminal className="w-4 h-4 text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
@@ -57,8 +76,8 @@ export default function Navbar({ activeSection }) {
           </div>
         </a>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-1 px-4 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 backdrop-blur-md">
+        {/* Desktop Navigation (lg+; tablets use the menu button — 6 links don't fit at 768px) */}
+        <nav aria-label="Primary" className="hidden lg:flex items-center gap-0.5 xl:gap-1 px-2 xl:px-4 py-1.5 rounded-full bg-slate-100/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 backdrop-blur-md">
           {NAV_LINKS.map((link) => {
             const isActive = activeSection === link.href.replace('#', '');
             return (
@@ -66,7 +85,8 @@ export default function Navbar({ activeSection }) {
                 key={link.name}
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
-                className={`relative px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                aria-current={isActive ? 'true' : undefined}
+                className={`relative px-3 xl:px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                   isActive
                     ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-semibold'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
@@ -99,7 +119,7 @@ export default function Navbar({ activeSection }) {
           </button>
 
           {/* Availability Pill */}
-          <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono">
+          <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -111,33 +131,35 @@ export default function Navbar({ activeSection }) {
           <a
             href="#contact"
             onClick={(e) => handleLinkClick(e, '#contact')}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-semibold text-sm shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all hover:scale-105 active:scale-95"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl whitespace-nowrap bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-semibold text-sm shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/30 transition-all hover:scale-105 active:scale-95"
           >
             <span>Get in Touch</span>
             <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>
 
-        {/* Mobile Actions (Theme Toggle + Hamburger) */}
-        <div className="flex items-center gap-2 md:hidden">
+        {/* Phone & Tablet Actions (Theme Toggle + Hamburger) */}
+        <div className="flex items-center gap-2 lg:hidden">
           <button
             onClick={toggleTheme}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
-            aria-label="Toggle theme"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
+            aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
           >
             {isDark ? (
-              <Sun className="w-4 h-4 text-amber-400" />
+              <Sun className="w-5 h-5 text-amber-400" />
             ) : (
-              <Moon className="w-4 h-4 text-indigo-500" />
+              <Moon className="w-5 h-5 text-indigo-500" />
             )}
           </button>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white focus:outline-none"
-            aria-label="Toggle navigation menu"
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
 
@@ -145,17 +167,29 @@ export default function Navbar({ activeSection }) {
 
       {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden mt-2 mx-4 p-4 rounded-2xl bg-white/95 dark:bg-slate-900/95 border border-slate-200 dark:border-slate-800 backdrop-blur-2xl shadow-2xl space-y-2 animate-fadeIn">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={(e) => handleLinkClick(e, link.href)}
-              className="block px-4 py-2.5 rounded-xl text-base font-medium text-slate-700 dark:text-slate-300 hover:text-emerald-500 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
+        <nav
+          id="mobile-menu"
+          aria-label="Mobile"
+          className="lg:hidden mt-3 mx-4 sm:mx-6 p-3 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-1 animate-fadeIn max-h-[calc(100vh-6rem)] supports-[height:100dvh]:max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain"
+        >
+          {NAV_LINKS.map((link) => {
+            const isActive = activeSection === link.href.replace('#', '');
+            return (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={(e) => handleLinkClick(e, link.href)}
+                aria-current={isActive ? 'true' : undefined}
+                className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                  isActive
+                    ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/80'
+                }`}
+              >
+                {link.name}
+              </a>
+            );
+          })}
           <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
             <a
               href="#contact"
@@ -166,7 +200,7 @@ export default function Navbar({ activeSection }) {
               <ArrowUpRight className="w-4 h-4" />
             </a>
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );
