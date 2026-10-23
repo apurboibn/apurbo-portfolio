@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import { 
   Code2, 
   ShoppingCart, 
@@ -13,6 +14,8 @@ import {
   Sparkles,
   Layers
 } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import { Reveal, EASE_OUT } from './motion/Reveal';
 
 const CATEGORY_ICONS = {
   'Web Development': Code2,
@@ -69,6 +72,8 @@ export default function SkillsMatrix({ portfolio }) {
     return ['All', ...skillCategories.map((c) => c.category)];
   }, [skillCategories]);
 
+  const query = searchQuery.trim().toLowerCase();
+
   return (
     <section id="skills" className="py-16 sm:py-20 relative overflow-hidden">
       {/* Background Accent */}
@@ -76,22 +81,15 @@ export default function SkillsMatrix({ portfolio }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            Skills & Technical Capabilities
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-['Outfit'] tracking-tight">
-            Interactive <span className="text-gradient-emerald">Skills Matrix</span>
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-            From modern WordPress & WooCommerce architectures to AI/Computer Vision models and hands-on IT infrastructure operations.
-          </p>
-        </div>
+        <SectionHeading
+          icon={Sparkles}
+          eyebrow="Skills & Technical Capabilities"
+          title={<>Interactive <span className="text-gradient-emerald">Skills Matrix</span></>}
+          description="From modern WordPress & WooCommerce architectures to AI/Computer Vision models and hands-on IT infrastructure operations."
+        />
 
         {/* Filter Controls: Search & Category Chips */}
-        <div className="mb-8 sm:mb-10 space-y-4">
+        <Reveal className="mb-8 sm:mb-10 space-y-4">
           
           {/* Search Bar */}
           <div className="relative max-w-md mx-auto">
@@ -102,16 +100,21 @@ export default function SkillsMatrix({ portfolio }) {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search skills (e.g., WordPress, YOLOv5, Python, BIOS, CartFlows)..."
-              className="w-full pl-11 pr-16 py-3 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 text-base sm:text-sm text-slate-900 [&::-webkit-search-cancel-button]:hidden dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none backdrop-blur-md transition-all shadow-inner"
+              className="w-full pl-11 pr-16 py-3 rounded-2xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/15 text-base sm:text-sm text-slate-900 [&::-webkit-search-cancel-button]:hidden dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none backdrop-blur-md transition-all shadow-inner"
             />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery('')}
-                className="absolute z-10 right-3 top-1/2 -translate-y-1/2 text-xs font-mono px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
-              >
-                Clear
-              </button>
-            )}
+            <AnimatePresence>
+              {searchQuery && (
+                <m.button
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.8 }}
+                  onClick={() => setSearchQuery('')}
+                  className="absolute z-10 right-3 top-1/2 -translate-y-1/2 text-xs font-mono px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
+                >
+                  Clear
+                </m.button>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Category Filter Chips — one swipeable row on phones, wrapped on bigger screens */}
@@ -123,74 +126,104 @@ export default function SkillsMatrix({ portfolio }) {
                   key={category}
                   onClick={() => setSelectedCategory(category)}
                   aria-pressed={isSelected}
-                  className={`shrink-0 whitespace-nowrap px-3.5 py-2 sm:py-1.5 rounded-full text-xs font-medium transition-all ${
+                  className={`relative shrink-0 whitespace-nowrap px-3.5 py-2 sm:py-1.5 rounded-full text-xs font-medium transition-colors ${
                     isSelected
-                      ? 'bg-emerald-500 text-slate-950 font-bold shadow-lg shadow-emerald-500/20 sm:scale-105'
+                      ? 'text-slate-950 font-bold border border-transparent'
                       : 'bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800'
                   }`}
                 >
-                  {category}
+                  {/* Green pill glides to the chosen chip */}
+                  {isSelected && (
+                    <m.span
+                      layoutId="skills-chip"
+                      className="absolute inset-0 rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/25"
+                      transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                    />
+                  )}
+                  <span className="relative">{category}</span>
                 </button>
               );
             })}
           </div>
 
-        </div>
+        </Reveal>
 
-        {/* Category Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredCategories.length > 0 ? (
-            filteredCategories.map((cat, idx) => {
-              const Icon = CATEGORY_ICONS[cat.category] || Layers;
-              const colorStyle = CATEGORY_COLORS[cat.category] || 'from-slate-500/20 to-slate-600/20 text-emerald-600 dark:text-emerald-400 border-slate-300 dark:border-slate-700';
+        {/* Category Cards Grid — cards fade in as you scroll and re-flow smoothly when filtering */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          <AnimatePresence mode="popLayout">
+            {filteredCategories.length > 0 ? (
+              filteredCategories.map((cat, idx) => {
+                const Icon = CATEGORY_ICONS[cat.category] || Layers;
+                const colorStyle = CATEGORY_COLORS[cat.category] || 'from-slate-500/20 to-slate-600/20 text-emerald-600 dark:text-emerald-400 border-slate-300 dark:border-slate-700';
 
-              return (
-                <div
-                  key={cat.category}
-                  className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/40 dark:hover:border-slate-700 hover:shadow-xl hover:shadow-emerald-500/5 transition-all duration-300 flex flex-col justify-between group"
-                >
-                  <div className="space-y-4">
-                    {/* Category Title & Icon */}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className={`shrink-0 p-2.5 rounded-xl bg-gradient-to-br ${colorStyle} border transition-transform group-hover:scale-110`}>
-                          <Icon className="w-5 h-5" />
+                return (
+                  <m.div
+                    key={cat.category}
+                    layout
+                    initial={{ opacity: 0, y: 28 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.94, transition: { duration: 0.2 } }}
+                    whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: 0.5, ease: EASE_OUT, delay: (idx % 3) * 0.08, layout: { duration: 0.35, ease: EASE_OUT } }}
+                    className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800/80 hover:border-emerald-500/40 dark:hover:border-emerald-500/30 hover:shadow-xl hover:shadow-emerald-500/5 transition-[border-color,box-shadow] duration-300 flex flex-col justify-between group"
+                  >
+                    <div className="space-y-4">
+                      {/* Category Title & Icon */}
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className={`shrink-0 p-2.5 rounded-xl bg-gradient-to-br ${colorStyle} border transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6`}>
+                            <Icon className="w-5 h-5" />
+                          </div>
+                          <h3 className="text-base font-bold text-slate-900 dark:text-white font-['Outfit']">
+                            {cat.category}
+                          </h3>
                         </div>
-                        <h3 className="text-base font-bold text-slate-900 dark:text-white font-['Outfit']">
-                          {cat.category}
-                        </h3>
-                      </div>
-                      <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/50">
-                        {cat.items.length}
-                      </span>
-                    </div>
-
-                    {/* Skill Tags */}
-                    <div className="flex flex-wrap gap-2 pt-2">
-                      {cat.items.map((skill, sIdx) => (
-                        <span
-                          key={sIdx}
-                          className="px-3 py-1.5 rounded-xl bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white text-xs transition-all hover:scale-105"
-                        >
-                          {skill}
+                        <span className="shrink-0 text-[11px] font-mono px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/50">
+                          {cat.items.length}
                         </span>
-                      ))}
+                      </div>
+
+                      {/* Skill Tags (matches for the search are highlighted) */}
+                      <div className="flex flex-wrap gap-2 pt-2">
+                        {cat.items.map((skill) => {
+                          const isMatch = query && skill.toLowerCase().includes(query);
+                          return (
+                            <span
+                              key={skill}
+                              className={`px-3 py-1.5 rounded-xl border text-xs transition-all hover:scale-105 ${
+                                isMatch
+                                  ? 'bg-emerald-50 dark:bg-emerald-500/15 border-emerald-500/50 text-emerald-700 dark:text-emerald-300 font-semibold'
+                                  : 'bg-slate-100/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 hover:border-emerald-500/40 text-slate-700 dark:text-slate-300 hover:text-slate-950 dark:hover:text-white'
+                              }`}
+                            >
+                              {skill}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })
-          ) : (
-            <div className="col-span-full py-12 text-center text-slate-500 dark:text-slate-400">
-              <p className="text-base">No skills found matching "{searchQuery}".</p>
-              <button
-                onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
-                className="mt-3 px-4 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-slate-300 dark:hover:bg-slate-700"
+                  </m.div>
+                );
+              })
+            ) : (
+              <m.div
+                key="empty"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="col-span-full py-12 text-center text-slate-500 dark:text-slate-400"
               >
-                Reset Filters
-              </button>
-            </div>
-          )}
+                <p className="text-base">No skills found matching "{searchQuery}".</p>
+                <button
+                  onClick={() => { setSearchQuery(''); setSelectedCategory('All'); }}
+                  className="mt-3 px-4 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-800 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-slate-300 dark:hover:bg-slate-700"
+                >
+                  Reset Filters
+                </button>
+              </m.div>
+            )}
+          </AnimatePresence>
         </div>
 
       </div>

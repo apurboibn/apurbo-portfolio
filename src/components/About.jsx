@@ -14,6 +14,7 @@ import {
   Languages,
   Building2
 } from 'lucide-react';
+import { Reveal, Stagger, StaggerItem } from './motion/Reveal';
 
 const WHAT_I_DO = [
   {
@@ -40,6 +41,7 @@ const WHAT_I_DO = [
 
 export default function About({ portfolio }) {
   const contact = portfolio?.contact || {};
+  const liveSites = (portfolio?.projects || []).filter((p) => p.category === 'Live Client Work').length;
   const email = contact.email || 'apurbo01hridoy@gmail.com';
   const location = contact.location || 'Dhaka, Bangladesh';
 
@@ -63,33 +65,33 @@ export default function About({ portfolio }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           
           {/* LEFT CONTAINER: Tagline, Heading, Exact Bio, Action Links */}
-          <div className="lg:col-span-7 xl:col-span-8 space-y-6 pt-0">
+          <Stagger className="lg:col-span-7 xl:col-span-8 space-y-6 pt-0">
             
             {/* Tagline Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-widest">
+            <StaggerItem className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-widest">
               <Sparkles className="w-3.5 h-3.5" />
               <span>ABOUT</span>
-            </div>
+            </StaggerItem>
 
             {/* Main Heading & Subheading */}
-            <div className="space-y-2">
+            <StaggerItem className="space-y-2">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white font-['Outfit'] tracking-tight">
                 Apurba <span className="text-gradient-emerald">Bhowal.</span>
               </h2>
               <p className="text-lg sm:text-xl text-emerald-600 dark:text-emerald-400/90 font-medium font-['Outfit']">
                 Junior Developer & AI-Assisted Digital Solutions Specialist
               </p>
-            </div>
+            </StaggerItem>
 
             {/* Exact Bio Text */}
-            <div className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
+            <StaggerItem className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed font-normal">
               <p>
                 WordPress & WooCommerce developer with hands-on experience building live client websites, e-commerce platforms, and conversion-focused landing pages. Skilled in client communication, requirement gathering, website deployment, domain and hosting management, and AI-assisted development workflows. Currently working as a Junior Developer at BizMappers Ltd., with additional experience in AI/ML research, including leading a YOLOv5-based intelligent traffic control thesis project.
               </p>
-            </div>
+            </StaggerItem>
 
             {/* Action Links */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <StaggerItem className="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href={`mailto:${email}`}
                 className="group flex items-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-500/20 hover:shadow-emerald-500/35 transition-all hover:scale-[1.02] active:scale-[0.98]"
@@ -106,15 +108,21 @@ export default function About({ portfolio }) {
                 <span>Explore Live Projects</span>
                 <ArrowRight className="w-4 h-4 text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform" />
               </a>
-            </div>
+            </StaggerItem>
 
-          </div>
+          </Stagger>
 
           {/* RIGHT CONTAINER: Profile Picture Frame (Top Aligned) */}
           <div className="lg:col-span-5 xl:col-span-4 pt-0">
-            <div className="relative mx-auto max-w-sm lg:max-w-none">
-              
-              <div className="relative rounded-3xl overflow-hidden glass-panel border border-slate-200 dark:border-slate-800/90 shadow-2xl group">
+            <Reveal className="relative mx-auto max-w-sm lg:max-w-none" y={32} scale={0.96} delay={0.15}>
+
+              {/* Animated gradient frame: a slowly spinning conic gradient peeking out 2px around the photo */}
+              <div className="relative rounded-3xl p-[2px] overflow-hidden shadow-2xl">
+                <div
+                  aria-hidden="true"
+                  className="absolute -inset-1/2 animate-glow-spin bg-[conic-gradient(from_0deg,transparent_0deg,#10B981_70deg,transparent_140deg,transparent_180deg,#6366F1_250deg,transparent_320deg)]"
+                />
+              <div className="relative rounded-[calc(1.5rem-2px)] overflow-hidden bg-slate-100 dark:bg-slate-950 group">
                 
                 {/* Profile Image with subtle zoom on hover */}
                 <div className="relative aspect-[4/4.4] w-full overflow-hidden bg-slate-100 dark:bg-slate-950">
@@ -140,7 +148,7 @@ export default function About({ portfolio }) {
                 {/* Floating Highlight Badges over Avatar */}
                 <div className="absolute top-4 right-4 px-3 py-1.5 rounded-xl glass-panel bg-slate-950/80 border-emerald-500/40 text-emerald-400 text-xs font-mono font-bold flex items-center gap-1.5 shadow-lg backdrop-blur-md">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                  7+ Live Projects
+                  {liveSites}+ Live Projects
                 </div>
 
                 <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-2 p-3 rounded-2xl glass-panel bg-slate-900/90 dark:bg-slate-950/85 border-slate-700/80 dark:border-slate-800/90 backdrop-blur-md">
@@ -154,8 +162,9 @@ export default function About({ portfolio }) {
                 </div>
 
               </div>
+              </div>
 
-            </div>
+            </Reveal>
           </div>
 
         </div>
@@ -164,7 +173,7 @@ export default function About({ portfolio }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch pt-4 border-t border-slate-200 dark:border-slate-800/80">
           
           {/* LEFT CONTAINER: Academic Information */}
-          <div className="glass-panel p-5 sm:p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6">
+          <Reveal className="glass-panel p-5 sm:p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 hover:border-indigo-500/30 transition-colors">
             
             <div className="space-y-5">
               {/* Header */}
@@ -234,10 +243,10 @@ export default function About({ portfolio }) {
               </div>
             </div>
 
-          </div>
+          </Reveal>
 
           {/* RIGHT CONTAINER: What I Do */}
-          <div className="glass-panel p-5 sm:p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6">
+          <Reveal delay={0.1} className="glass-panel p-5 sm:p-7 rounded-3xl border-slate-200 dark:border-slate-800 flex flex-col justify-between space-y-6 hover:border-emerald-500/30 transition-colors">
             
             <div className="space-y-5">
               {/* Header */}
@@ -250,16 +259,16 @@ export default function About({ portfolio }) {
               </div>
 
               {/* Service Cards */}
-              <div className="space-y-3">
+              <Stagger className="space-y-3" stagger={0.1}>
                 {WHAT_I_DO.map((item, idx) => {
                   const Icon = item.icon;
                   return (
-                    <div
+                    <StaggerItem
                       key={idx}
                       className="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-900/70 border border-slate-200 dark:border-slate-800/90 hover:border-emerald-500/30 transition-all group"
                     >
                       <div className="flex items-start gap-3">
-                        <div className="p-2 rounded-xl bg-slate-200/80 dark:bg-slate-800/90 border border-slate-300/60 dark:border-slate-700/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 group-hover:text-emerald-500 dark:group-hover:text-emerald-300 transition-all shrink-0">
+                        <div className="p-2 rounded-xl bg-slate-200/80 dark:bg-slate-800/90 border border-slate-300/60 dark:border-slate-700/60 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 group-hover:-rotate-6 group-hover:text-emerald-500 dark:group-hover:text-emerald-300 transition-all shrink-0">
                           <Icon className="w-4 h-4" />
                         </div>
                         <div className="space-y-0.5">
@@ -271,10 +280,10 @@ export default function About({ portfolio }) {
                           </p>
                         </div>
                       </div>
-                    </div>
+                    </StaggerItem>
                   );
                 })}
-              </div>
+              </Stagger>
             </div>
 
             {/* Bottom Status Row */}
@@ -292,7 +301,7 @@ export default function About({ portfolio }) {
               </span>
             </div>
 
-          </div>
+          </Reveal>
 
         </div>
 

@@ -1,11 +1,7 @@
 import React from 'react';
-import { ArrowUp, Terminal, Mail, Phone, MapPin } from 'lucide-react';
+import { Terminal, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer({ portfolio }) {
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
     <footer className="border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-[#06080D] pt-12 sm:pt-16 pb-10 sm:pb-12 relative overflow-hidden transition-colors duration-300">
       {/* Background Lighting */}
@@ -68,24 +64,10 @@ export default function Footer({ portfolio }) {
 
         </div>
 
-        {/* Bottom Copyright & Back to Top */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-500 text-center sm:text-left">
-          <p>© {new Date().getFullYear()} Apurba Bhowal. All rights reserved.</p>
-          
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <span className="text-[11px] font-mono text-slate-400">
-              Engineered with React • Tailwind • Framer Motion
-            </span>
-            <button
-              onClick={scrollToTop}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-emerald-500 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all"
-              aria-label="Back to top"
-            >
-              <ArrowUp className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
-              <span>Top</span>
-            </button>
-          </div>
-        </div>
+        {/* Copyright */}
+        <p className="pt-8 text-center text-xs text-slate-500 dark:text-slate-500">
+          © {new Date().getFullYear()} Apurba Bhowal. All rights reserved.
+        </p>
 
       </div>
     </footer>

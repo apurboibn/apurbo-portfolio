@@ -11,6 +11,9 @@ import {
   ArrowUpRight,
   ExternalLink
 } from 'lucide-react';
+import { m, AnimatePresence } from 'framer-motion';
+import SectionHeading from './SectionHeading';
+import { Reveal, Stagger, StaggerItem } from './motion/Reveal';
 
 // Confetti is only needed after a click, so load it on demand instead of in the main bundle
 const fireConfetti = (options) => {
@@ -75,27 +78,20 @@ export default function ContactSection({ portfolio }) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border-emerald-500/30 text-emerald-600 dark:text-emerald-400 text-xs font-mono uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5" />
-            Let's Collaborate
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-['Outfit'] tracking-tight">
-            Get in <span className="text-gradient-emerald">Touch</span>
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-            Have a project in mind, need WordPress/e-commerce development, or want to discuss AI research? Let's talk.
-          </p>
-        </div>
+        <SectionHeading
+          icon={Sparkles}
+          eyebrow="Let's Collaborate"
+          title={<>Get in <span className="text-gradient-emerald">Touch</span></>}
+          description="Have a project in mind, need WordPress/e-commerce development, or want to discuss AI research? Let's talk."
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
           
           {/* Left Column: Contact Cards */}
-          <div className="lg:col-span-5 space-y-4 sm:space-y-5">
+          <Stagger className="lg:col-span-5 space-y-4 sm:space-y-5" stagger={0.1}>
             
             {/* Direct Email Card */}
-            <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-emerald-500/40 transition-colors">
+            <StaggerItem className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-emerald-500/40 transition-colors">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="shrink-0 p-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400">
@@ -117,10 +113,10 @@ export default function ContactSection({ portfolio }) {
                   {copiedField === 'email' ? <Check className="w-4 h-4 text-emerald-500" /> : <Copy className="w-4 h-4" />}
                 </button>
               </div>
-            </div>
+            </StaggerItem>
 
             {/* Direct Phone & WhatsApp Card */}
-            <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-cyan-500/40 transition-colors">
+            <StaggerItem className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 space-y-3 hover:border-cyan-500/40 transition-colors">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex items-center gap-3 min-w-0">
                   <div className="shrink-0 p-2.5 rounded-xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400">
@@ -155,10 +151,10 @@ export default function ContactSection({ portfolio }) {
                   <span>Chat on WhatsApp</span>
                 </a>
               </div>
-            </div>
+            </StaggerItem>
 
             {/* Location Card */}
-            <div className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 transition-colors">
+            <StaggerItem className="glass-panel p-5 sm:p-6 rounded-2xl border-slate-200 dark:border-slate-800 hover:border-indigo-500/40 transition-colors">
               <div className="flex items-center gap-3">
                 <div className="shrink-0 p-2.5 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400">
                   <MapPin className="w-5 h-5" />
@@ -168,10 +164,10 @@ export default function ContactSection({ portfolio }) {
                   <p className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">{location}</p>
                 </div>
               </div>
-            </div>
+            </StaggerItem>
 
             {/* Quick Availability Badge */}
-            <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+            <StaggerItem className="p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
               <div className="flex items-center gap-2 text-xs font-mono text-emerald-600 dark:text-emerald-400">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 Availability Status
@@ -179,12 +175,12 @@ export default function ContactSection({ portfolio }) {
               <p className="text-xs text-slate-600 dark:text-slate-300">
                 Open to permanent software developer roles, WordPress/WooCommerce projects, and high-conversion client landing page commissions.
               </p>
-            </div>
+            </StaggerItem>
 
-          </div>
+          </Stagger>
 
           {/* Right Column: Interactive Message Form */}
-          <div className="lg:col-span-7">
+          <Reveal className="lg:col-span-7" delay={0.15}>
             <div className="glass-panel p-5 sm:p-8 rounded-3xl border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
               
               <h3 className="text-xl font-bold text-slate-900 dark:text-white font-['Outfit'] mb-6 flex items-center gap-2">
@@ -192,19 +188,37 @@ export default function ContactSection({ portfolio }) {
                 Send a Direct Message
               </h3>
 
+              <AnimatePresence mode="wait" initial={false}>
               {isSubmitted ? (
-                <div className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3 animate-fadeIn">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+                <m.div
+                  key="sent"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-500/40 text-center space-y-3"
+                >
+                  <m.div
+                    initial={{ scale: 0, rotate: -45 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 15, delay: 0.1 }}
+                    className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
                     <Check className="w-6 h-6" />
-                  </div>
+                  </m.div>
                   <h4 className="text-lg font-bold text-slate-900 dark:text-white">Your email app is opening…</h4>
                   <p className="text-xs text-slate-600 dark:text-slate-300">
                     Your message is ready in a new email — just press Send there. If nothing opened, write to{' '}
                     <a href={`mailto:${email}`} className="font-semibold text-emerald-600 dark:text-emerald-400 underline break-all">{email}</a>.
                   </p>
-                </div>
+                </m.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <m.form
+                  key="form"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onSubmit={handleSubmit}
+                  className="space-y-4"
+                >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <label htmlFor="contact-name" className="text-xs font-mono text-slate-500 dark:text-slate-400">Your Name *</label>
@@ -262,19 +276,20 @@ export default function ContactSection({ portfolio }) {
 
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
+                    className="group w-full flex items-center justify-center gap-2 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-slate-950 font-bold text-sm shadow-xl shadow-emerald-500/20 transition-all hover:scale-[1.01] active:scale-[0.99]"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     <span>Send Message</span>
                   </button>
                   <p className="text-[11px] text-center text-slate-500 dark:text-slate-400">
                     Opens your email app with this message ready to send.
                   </p>
-                </form>
+                </m.form>
               )}
+              </AnimatePresence>
 
             </div>
-          </div>
+          </Reveal>
 
         </div>
 

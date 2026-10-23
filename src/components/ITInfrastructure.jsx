@@ -8,6 +8,8 @@ import {
   Sparkles,
   Zap
 } from 'lucide-react';
+import SectionHeading from './SectionHeading';
+import { Reveal } from './motion/Reveal';
 
 const IT_CAPABILITIES = [
   {
@@ -48,31 +50,32 @@ export default function ITInfrastructure() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel border-cyan-500/30 text-cyan-600 dark:text-cyan-400 text-xs font-mono uppercase tracking-wider">
-            <Wrench className="w-3.5 h-3.5" />
-            Infrastructure & Operations
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white font-['Outfit'] tracking-tight">
-            IT Operations & <span className="text-gradient-emerald">Technical Support</span>
-          </h2>
-          <p className="text-slate-600 dark:text-slate-400 text-sm sm:text-base">
-            Hands-on IT operations experience developed at BizMappers Ltd. and backed by Cisco Networking Academy certification.
-          </p>
-        </div>
+        <SectionHeading
+          tone="cyan"
+          icon={Wrench}
+          eyebrow="Infrastructure & Operations"
+          title={<>IT Operations & <span className="text-gradient-emerald">Technical Support</span></>}
+          description="Hands-on IT operations experience developed at BizMappers Ltd. and backed by Cisco Networking Academy certification."
+        />
 
         {/* Feature Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mb-8 sm:mb-12">
           {IT_CAPABILITIES.map((cap, idx) => {
             const Icon = cap.icon;
             return (
-              <div
+              <Reveal
                 key={idx}
-                className="glass-panel p-5 sm:p-7 rounded-2xl border-slate-200 dark:border-slate-800/80 hover:border-cyan-500/40 transition-all duration-300 group hover:-translate-y-1"
+                delay={(idx % 2) * 0.1}
+                whileHover={{ y: -4, transition: { duration: 0.2 } }}
+                className="relative overflow-hidden glass-panel p-5 sm:p-7 rounded-2xl border-slate-200 dark:border-slate-800/80 hover:border-cyan-500/40 transition-colors duration-300 group"
               >
+                {/* Scan line that sweeps across on hover */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent -translate-x-full group-hover:translate-x-[400%] transition-transform duration-1000 ease-out"
+                />
                 <div className="flex items-start gap-3 sm:gap-4">
-                  <div className="p-2.5 sm:p-3 rounded-2xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 shrink-0 group-hover:scale-110 transition-transform">
+                  <div className="p-2.5 sm:p-3 rounded-2xl bg-cyan-50 dark:bg-cyan-500/10 border border-cyan-500/30 text-cyan-600 dark:text-cyan-400 shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
                     <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </div>
                   <div className="space-y-2 min-w-0">
@@ -89,13 +92,13 @@ export default function ITInfrastructure() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </Reveal>
             );
           })}
         </div>
 
         {/* Bottom Callout Banner */}
-        <div className="glass-panel p-6 sm:p-8 rounded-3xl border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-50/90 via-slate-50/50 to-emerald-50/20 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-emerald-950/20 flex flex-col md:flex-row items-center justify-between gap-6">
+        <Reveal y={30} className="glass-panel p-6 sm:p-8 rounded-3xl border-slate-200 dark:border-slate-800 bg-gradient-to-r from-slate-50/90 via-slate-50/50 to-emerald-50/20 dark:from-slate-900/90 dark:via-slate-900/50 dark:to-emerald-950/20 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-left">
             <div className="flex items-center justify-center md:justify-start gap-2 text-emerald-600 dark:text-emerald-400 text-xs font-mono font-bold uppercase">
               <Zap className="w-4 h-4" />
@@ -111,11 +114,12 @@ export default function ITInfrastructure() {
 
           <a
             href="#contact"
-            className="shrink-0 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-emerald-500/20 transition-all hover:scale-105"
+            className="group shrink-0 inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs sm:text-sm shadow-xl shadow-emerald-500/20 transition-all hover:scale-105"
           >
             Hire for Web & IT Needs
+            <Zap className="w-4 h-4 group-hover:rotate-12 group-hover:scale-110 transition-transform" />
           </a>
-        </div>
+        </Reveal>
 
       </div>
     </section>

@@ -44,6 +44,11 @@ export default {
         'float': 'float 6s ease-in-out infinite',
         'glow-spin': 'glow-spin 12s linear infinite',
         'fadeIn': 'fadeIn 0.2s ease-out',
+        'fade-up': 'fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both',
+        'scale-in': 'scaleIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both',
+        'marquee': 'marquee 40s linear infinite',
+        'drift': 'drift 14s ease-in-out infinite',
+        'blink': 'blink 1.1s steps(1, end) infinite',
       },
       keyframes: {
         float: {
@@ -57,6 +62,26 @@ export default {
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(-4px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeUp: {
+          '0%': { opacity: '0', transform: 'translateY(18px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'translateY(16px) scale(0.96)' },
+          '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+        },
+        marquee: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        drift: {
+          '0%, 100%': { transform: 'translate3d(0, 0, 0) rotate(0deg)' },
+          '50%': { transform: 'translate3d(0, -18px, 0) rotate(6deg)' },
+        },
+        blink: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0' },
         }
       }
     },

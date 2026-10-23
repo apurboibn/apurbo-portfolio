@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { m, AnimatePresence } from 'framer-motion';
 import { Menu, X, ArrowUpRight, Terminal, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import ScrollProgress from './ScrollProgress';
 
 const NAV_LINKS = [
   { name: 'About', href: '#about' },
@@ -11,10 +13,39 @@ const NAV_LINKS = [
   { name: 'Contact', href: '#contact' },
 ];
 
+// Sun/moon swap with a little spin
+function ThemeIcon({ isDark, size }) {
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <m.span
+        key={isDark ? 'sun' : 'moon'}
+        initial={{ rotate: -90, opacity: 0, scale: 0.6 }}
+        animate={{ rotate: 0, opacity: 1, scale: 1 }}
+        exit={{ rotate: 90, opacity: 0, scale: 0.6 }}
+        transition={{ duration: 0.25 }}
+        className="flex"
+      >
+        {isDark ? <Sun className={`${size} text-amber-400`} /> : <Moon className={`${size} text-indigo-500`} />}
+      </m.span>
+    </AnimatePresence>
+  );
+}
+
+const menuVariants = {
+  hidden: { opacity: 0, y: -8, scale: 0.98 },
+  show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.22, staggerChildren: 0.04, delayChildren: 0.05 } },
+  exit: { opacity: 0, y: -8, scale: 0.98, transition: { duration: 0.15 } },
+};
+
+const menuItemVariants = {
+  hidden: { opacity: 0, x: -12 },
+  show: { opacity: 1, x: 0 },
+};
+
 export default function Navbar({ activeSection }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { theme, toggleTheme, isDark } = useTheme();
+  const { toggleTheme, isDark } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -86,16 +117,21 @@ export default function Navbar({ activeSection }) {
                 href={link.href}
                 onClick={(e) => handleLinkClick(e, link.href)}
                 aria-current={isActive ? 'true' : undefined}
-                className={`relative px-3 xl:px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                className={`relative px-3 xl:px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors duration-200 ${
                   isActive
-                    ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-semibold'
+                    ? 'text-emerald-600 dark:text-emerald-400 font-semibold'
                     : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/60 dark:hover:bg-slate-800/60'
                 }`}
               >
-                {link.name}
+                {/* Highlight that slides from link to link as you scroll */}
                 {isActive && (
-                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-emerald-500 dark:bg-emerald-400 rounded-full glow-emerald" />
+                  <m.span
+                    layoutId="nav-active-pill"
+                    className="absolute inset-0 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/25"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
                 )}
+                <span className="relative">{link.name}</span>
               </a>
             );
           })}
@@ -111,11 +147,7 @@ export default function Navbar({ activeSection }) {
             aria-label={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
             title={`Switch to ${isDark ? 'Light' : 'Dark'} mode`}
           >
-            {isDark ? (
-              <Sun className="w-4 h-4 text-amber-400 transition-transform" />
-            ) : (
-              <Moon className="w-4 h-4 text-indigo-500 transition-transform" />
-            )}
+            <ThemeIcon isDark={isDark} size="w-4 h-4" />
           </button>
 
           {/* Availability Pill */}
@@ -145,11 +177,7 @@ export default function Navbar({ activeSection }) {
             className="flex items-center justify-center w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300"
             aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
           >
-            {isDark ? (
-              <Sun className="w-5 h-5 text-amber-400" />
-            ) : (
-              <Moon className="w-5 h-5 text-indigo-500" />
-            )}
+            <ThemeIcon isDark={isDark} size="w-5 h-5" />
           </button>
 
           <button
@@ -166,42 +194,53 @@ export default function Navbar({ activeSection }) {
       </div>
 
       {/* Mobile Dropdown Menu */}
-      {mobileMenuOpen && (
-        <nav
-          id="mobile-menu"
-          aria-label="Mobile"
-          className="lg:hidden mt-3 mx-4 sm:mx-6 p-3 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-1 animate-fadeIn max-h-[calc(100vh-6rem)] supports-[height:100dvh]:max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain"
-        >
-          {NAV_LINKS.map((link) => {
-            const isActive = activeSection === link.href.replace('#', '');
-            return (
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <m.nav
+            id="mobile-menu"
+            aria-label="Mobile"
+            variants={menuVariants}
+            initial="hidden"
+            animate="show"
+            exit="exit"
+            className="lg:hidden mt-3 mx-4 sm:mx-6 p-3 sm:p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-1 origin-top max-h-[calc(100vh-6rem)] supports-[height:100dvh]:max-h-[calc(100dvh-6rem)] overflow-y-auto overscroll-contain"
+          >
+            {NAV_LINKS.map((link) => {
+              const isActive = activeSection === link.href.replace('#', '');
+              return (
+                <m.a
+                  key={link.name}
+                  variants={menuItemVariants}
+                  href={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
+                  aria-current={isActive ? 'true' : undefined}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                    isActive
+                      ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10'
+                      : 'text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/80'
+                  }`}
+                >
+                  {link.name}
+                  {isActive && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" aria-hidden="true" />}
+                </m.a>
+              );
+            })}
+            <m.div variants={menuItemVariants} className="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
               <a
-                key={link.name}
-                href={link.href}
-                onClick={(e) => handleLinkClick(e, link.href)}
-                aria-current={isActive ? 'true' : undefined}
-                className={`block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
-                  isActive
-                    ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10'
-                    : 'text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-100 dark:hover:bg-slate-800/80'
-                }`}
+                href="#contact"
+                onClick={(e) => handleLinkClick(e, '#contact')}
+                className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-slate-950 font-semibold text-sm shadow-lg"
               >
-                {link.name}
+                <span>Get in Touch</span>
+                <ArrowUpRight className="w-4 h-4" />
               </a>
-            );
-          })}
-          <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
-            <a
-              href="#contact"
-              onClick={(e) => handleLinkClick(e, '#contact')}
-              className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-slate-950 font-semibold text-sm shadow-lg"
-            >
-              <span>Get in Touch</span>
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          </div>
-        </nav>
-      )}
+            </m.div>
+          </m.nav>
+        )}
+      </AnimatePresence>
+
+      {/* Reading progress (hidden while the mobile menu is open, or it would sit below the menu) */}
+      {!mobileMenuOpen && <ScrollProgress />}
     </header>
   );
 }

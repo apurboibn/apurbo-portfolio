@@ -11,6 +11,9 @@ import ITInfrastructure from './components/ITInfrastructure';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import ThesisModal from './components/ThesisModal';
+import TechMarquee from './components/TechMarquee';
+import BackToTop from './components/BackToTop';
+import MotionProvider from './components/motion/MotionProvider';
 
 function AppContent() {
   const [isThesisModalOpen, setIsThesisModalOpen] = useState(false);
@@ -56,6 +59,8 @@ function AppContent() {
           portfolio={portfolioData} 
           onOpenThesis={() => setIsThesisModalOpen(true)} 
         />
+
+        <TechMarquee />
         
         <About 
           portfolio={portfolioData} 
@@ -86,6 +91,8 @@ function AppContent() {
         portfolio={portfolioData} 
       />
 
+      <BackToTop />
+
       {/* Glassy Dynamic Thesis PDF Viewer Modal */}
       <ThesisModal
         isOpen={isThesisModalOpen}
@@ -99,7 +106,9 @@ function AppContent() {
 export default function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <MotionProvider>
+        <AppContent />
+      </MotionProvider>
     </ThemeProvider>
   );
 }

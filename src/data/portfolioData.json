@@ -205,20 +205,19 @@
     ],
     "projects": [
         {
-            "title": "Ramy Cosmetics Website",
+            "title": "Al Zakir Imports Website",
             "type": "Live Client Website",
             "category": "Live Client Work",
-            "description": "Live client e-commerce website designed and developed for beauty & cosmetics products.",
+            "description": "Live client e-commerce store selling gadgets and accessories, with a full product catalog and online checkout.",
             "techStack": [
                 "WordPress",
                 "WooCommerce",
-                "Elementor",
-                "PHP"
+                "Elementor"
             ],
             "links": [
                 {
                     "label": "Visit Live Website",
-                    "url": "https://ramybd.com/",
+                    "url": "https://alzakirimports.com/",
                     "isPdf": false
                 }
             ]
@@ -238,6 +237,25 @@
                 {
                     "label": "Visit Live Website",
                     "url": "https://wajiha.com.bd/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "Ramy Cosmetics Website",
+            "type": "Live Client Website",
+            "category": "Live Client Work",
+            "description": "Live client e-commerce website designed and developed for beauty & cosmetics products.",
+            "techStack": [
+                "WordPress",
+                "WooCommerce",
+                "Elementor",
+                "PHP"
+            ],
+            "links": [
+                {
+                    "label": "Visit Live Website",
+                    "url": "https://ramybd.com/",
                     "isPdf": false
                 }
             ]
@@ -275,6 +293,24 @@
                 {
                     "label": "Visit Live Website",
                     "url": "https://fresheats.com.bd/",
+                    "isPdf": false
+                }
+            ]
+        },
+        {
+            "title": "Aarogya BD Landing Page",
+            "type": "Live Sales Landing Page",
+            "category": "Live Client Work",
+            "description": "Dynamic, high-converting sales landing page built with WordPress and CartFlows.",
+            "techStack": [
+                "WordPress",
+                "CartFlows",
+                "Conversion Optimization"
+            ],
+            "links": [
+                {
+                    "label": "Visit Landing Page",
+                    "url": "https://aarogyabd.com/",
                     "isPdf": false
                 }
             ]
